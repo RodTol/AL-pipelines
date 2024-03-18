@@ -16,12 +16,43 @@
             string(name: 'configFilePath', defaultValue: '/u/area/jenkins_onpexp/AL-pipelines/configurations/config.json', description: 'Path to the config JSON file')
         }
         stages {
-            stage('Test') {
+            stage('Pull project repository on the Cluster') {
+                steps {
+                    script {
+                        withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
+                            sh '''
+                                ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
+                                    echo "**********Running ''git pull'' in AL-pipelines directory**********"
+                                    cd AL-pipelines && git pull
+                                '
+                            '''
+                        }
+                    }    
+                }
+            }
+            stage('Generate setup based on configuration file') {
+                steps {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
+                        /*Using the config.json file we are able to create/modify all the 
+                        necessary components for the basecalling procedure*/
+                        sh '''
+                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '                          
+                                cd AL-pipelines/AL_scripts
+                                python configuration.py '${configFilePath}'
+                                #echo "------File configuration------"
+                                cat script_resources.sh
+                                #./startup.sh '${configFilePath}'
+                            '
+                        '''
+                    }    
+                }
+            } 
+            stage('Basic alignment') {
                 steps {
                     withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
                         sh '''
                             ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                echo "NUOVA PIPELINE"
+                                echo "NEW PIPELINE"
                                 ls
                             '
                         '''                    

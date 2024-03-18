@@ -1,0 +1,21 @@
+{
+    "General": {
+      "run_name": "AL_ExampleRun",
+      "run_time": "00:20:00",
+      "version": "3.0"
+    },
+    "Slurm": {
+      "output": "/u/area/jenkins_onpexp/scratch/jenkins_logs/tmp_al/%x-%j.out",
+      "error": "/u/area/jenkins_onpexp/scratch/jenkins_logs/tmp_al/%x-%j.err",
+      "instructions": "/u/area/jenkins_onpexp/AL-pipelines/AL_scripts/instructions.sh "
+    },
+    "Resources": {
+      "index_host" : "0", 
+      "nodes_queue" : ["DGX"],
+      "nodes_list" : ["dgx001"],
+      "nodes_ip" : ["10.128.2.161"],
+      "nodes_cpus" : ["2"],
+      "nodes_gpus" : ["0"]
+    }
+  }
+  
