@@ -2,7 +2,7 @@
   <img src="docs/assets/logo-area.png" alt="Area logo" width="200"/>
 </p>
 
-# BC-alignment 🧬 
+# AL-pipelines 🧬 
 This project contains some Jenkins-pipeline created to perform Alignment on the Orfeo cluster at AreaSciencePark.
 
 # Notes on alignment

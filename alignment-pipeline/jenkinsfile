@@ -13,154 +13,21 @@
         parameters {
             /*The idea is to set as parameter the path to the JSON and not the actual JSON. 
             I assumed that the starting directory is the pipeline one*/
-            string(name: 'configFilePath', defaultValue: '/u/area/jenkins_onpexp/BC-pipelines/configurations/config.json', description: 'Path to the config JSON file')
+            string(name: 'configFilePath', defaultValue: '/u/area/jenkins_onpexp/AL-pipelines/configurations/config.json', description: 'Path to the config JSON file')
         }
         stages {
-            stage('Cleanup tmp dir') {
+            stage('Test') {
                 steps {
                     withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
-                        /*Logs dir cleanup*/
                         sh '''
                             ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                cd /u/area/jenkins_onpexp/scratch/jenkins_logs
-                                rm -rf tmp
-                                mkdir tmp
-                            '    
-                        '''
-                        /*Output dir cleanup*/
-                        sh '''
-                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                cd /u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/
-                                rm -rf tmp
-                                mkdir tmp
-                                mkdir tmp/pass
-                                mkdir tmp/fail
-                            '    
-                        '''
-                        
-                        /*Input dir cleanup*/
-                        sh '''
-                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                cd /u/area/jenkins_onpexp/scratch/10G_dataset_POD5
-                                rm -rf ASSIGNED_*
-                                rm -rf FAILED_*
-                                rm -rf TMP_*
+                                echo "NUOVA PIPELINE"
+                                ls
                             '
-                        '''
-
-                        /*BC_software dir cleanup*/
-                        sh '''
-                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                cd /u/area/jenkins_onpexp/BC-pipelines/BC_software
-                                rm -rf server_node_*
-                                rm -rf __pycache__
-                            '
-                        '''
-
-
-                        /*Final_processing dir cleanup*/
-                        sh '''
-                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                cd /u/area/jenkins_onpexp/BC-pipelines/Final_processing
-                                rm -f *.csv
-                            '
-                        '''
-
+                        '''                    
                     }
                 }
-            }   
-            stage('Pull project repository on the Cluster') {
-                steps {
-                    script {
-                        withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
-                            sh '''
-                                ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                    echo "**********Running ''git pull'' in BC-pipelines directory**********"
-                                    cd BC-pipelines && git pull
-                                '
-                            '''
-                        }
-                    }    
-                }
-            }
-            stage('Generate setup based on configuration file') {
-                steps {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
-                        /*Using the config.json file we are able to create/modify all the 
-                        necessary components for the basecalling procedure*/
-                        sh '''
-                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '                          
-                                cd BC-pipelines/BC_scripts
-                                python configuration.py '${configFilePath}'
-                                echo "------File configuration------"
-                                cat script_resources.sh
-                                ./startup.sh '${configFilePath}'
-                            '
-                        '''
-                    }    
-                }
-            } 
-            stage('Start the basecalling run') {
-                steps {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
-                        sh '''
-                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                echo "**********Launching the basecalling**********"
-                                cd ~/BC-pipelines/basecalling-pipeline
-                                sbatch ~/BC-pipelines/BC_scripts/script_resources.sh '${configFilePath}'> jobid.txt
-                                job_id=$(grep -oE '[0-9]+' jobid.txt)
-                                job_id="${job_id}+0"
-                                echo "Server Job ID: $job_id"
-                            '    
-                        '''
-                    }
-                }
-            }
-            stage('Wait for Basecalling to end') {
-                steps {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
-                        /*Jenkins will wait for the basecalling to finish*/
-                        sh '''
-                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                cd ~/BC-pipelines/basecalling-pipeline
-                                job_id=$(grep -oE '[0-9]+' jobid.txt)
-                                job_id="${job_id}+0"
-                                echo "Job ID: $job_id"
-                                ~/BC-pipelines/BC_scripts/wait.sh $job_id
-                            '    
-                        '''
-                    }
-                }
-            }
-            stage('Create Final file') {
-                steps {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
-                        sh '''
-                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                cd ~/BC-pipelines/Final_processing
-                                python final_report.py '${configFilePath}' ~/scratch/jenkins_logs/tmp
-
-                                run_name=$(jq -r '.General.run_name' '${configFilePath}' )
-
-                                cat output_$run_name.csv
-                                python plots.py output_$run_name.csv
-                            '    
-                        '''
-                    }
-                }
-            }
-            stage('Send Report to User') {
-                steps {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
-                        sh '''
-                            ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                cd ~/BC-pipelines/Final_processing
-                                ./telegram_bot.sh '${configFilePath}'
-                                ./telegram_send_file.sh bar_chart.png pie_chart.png
-                            '                    
-                        '''
-                    }                        
-                }
+                
             }
         }
     }
