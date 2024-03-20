@@ -39,26 +39,29 @@
                             ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '                          
                                 cd AL-pipelines/AL_scripts
                                 python configuration.py '${configFilePath}'
-                                #echo "------File configuration------"
+                                
                                 cat script_resources.sh
-                                #./startup.sh '${configFilePath}'
                             '
                         '''
                     }    
                 }
             } 
-            stage('Basic alignment') {
+            stage('Start the alignment run') {
                 steps {
                     withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
                         sh '''
                             ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
-                                echo "NEW PIPELINE"
-                                ls
-                            '
-                        '''                    
+                                echo "**********Launching the alignment**********"
+                                cd ~/AL-pipelines/
+                                sbatch AL_scripts/script_resources.sh '${configFilePath}'> jobid.txt
+                                
+                                job_id=$(grep -oE '[0-9]+' jobid.txt)
+                                job_id="${job_id}+0"
+                                echo "Server Job ID: $job_id"
+                            '    
+                        '''
                     }
                 }
-                
             }
         }
     }
