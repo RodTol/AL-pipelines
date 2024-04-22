@@ -41,5 +41,5 @@ samtools tview 10G_aligned.bam #for a rough visualization
 > [!NOTE]  
 > `samtools` is the software for managing and using BAM/CRAM files. For this project the most important feature is the possibility to do a **merge**
 - I was suggested to use CRAM files instead of normal BAM since they are smaller, but they will need the genome reference to be anlyzed
-> [!CAUTION] Memory
+> [!CAUTION] 
 > The alignment requires a lot of memory, so it's important that the script specify this.
