@@ -10,6 +10,13 @@ This project contains some Jenkins-pipeline created to perform Alignment on the 
 Next step in the processing of nanopore data after basecalling is the alignment. I could use `minmap2` but this is already implemented inside `dorado`. So, to launch it, look at the GitHub documentation of the lattest, but more information are available at `minmap2` [documentation](https://github.com/lh3/minimap2?tab=readme-ov-file#general), but also at [samtools](https://www.htslib.org/workflow/fastq.html).  
 I need a reference file, and looking at the [dataset](https://42basepairs.com/browse/s3/ont-open-data/cliveome_kit14_2022.05/gdna/flowcells/ONLA29134/20220510_1127_5H_PAM63974_a5e7a202/aligned?file=read_processor_log-2022-05-16_09-11-04.log&preview=contents) page, I decided to use the GRCh38, which is downloadable from [here] (https://www.ncbi.nlm.nih.gov/genome/guide/human/).  
 
+>[!CAUTION]
+> I need to have all my **fastq** files merged into one to perform the alignment using all my data. Otherwise I can align individually each file and then merge them all toghether using *samtools*.  
+> In order to merge the file you need to something like:
+> ```
+> cat file*.fastq > bigfile.fastq
+> ```
+
 ### dorado
 Now let's look at the commands with dorado:
 ```bash 
@@ -20,7 +27,7 @@ Where I have the `.fastq` files inside the `pass` directory and the GRCh37_lates
 ### minimap2 
 If I want a more fine control I need to use the `minimap2` tool. The following command to the alignment for one file:
 ```
-minimap2 -t 8 -a -x map-ont GRCh37_latest_genomic.fna  Basecalled_CliveOME/hac/pass/fastq_runid_58881fec94cd84e3217e3b5dd7ebdab4eb3a5166_client0_0_0.fastq -o tmp/test.sam 
+minimap2 -t 8 -a -x map-ont GRCh37_latest_genomic.fna  Basecalled_CliveOME/hac/pass/merged_basecalled.fastq -o tmp/test.sam 
 ```
 Let's analyze it a bit:
 - `-t 8`: indicates the number of threads on which the alignment will be executed
