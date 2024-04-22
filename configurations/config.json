@@ -12,7 +12,7 @@
     "Resources": {
       "index_host" : "0", 
       "nodes_queue" : ["EPYC"],
-      "nodes_list" : ["epyc005"],
+      "nodes_list" : ["epyc008"],
       "nodes_ip" : ["10.128.2.161"],
       "nodes_cpus" : ["2"],
       "nodes_gpus" : ["0"]
