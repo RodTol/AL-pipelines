@@ -10,15 +10,15 @@
       "instructions": "/u/area/jenkins_onpexp/AL-pipelines/AL_scripts/instructions.sh "
     },
     "Alignment": {
-      "threads": [24]
+      "threads": [24,24]
     },
     "Resources": {
-      "nodes_queue" : ["EPYC"],
-      "nodes_list" : [""],
-      "nodes_ip" : [""],
-      "nodes_cpus" : ["48"],
-      "nodes_mem" : ["200GB"],      
-      "nodes_gpus" : ["0"]
+      "nodes_queue" : ["EPYC","EPYC"],
+      "nodes_list" : ["",""],
+      "nodes_ip" : ["", ""],
+      "nodes_cpus" : ["48", "48"],
+      "nodes_mem" : ["200GB", "200GB"],      
+      "nodes_gpus" : ["0", "0"]
     }
   }
   

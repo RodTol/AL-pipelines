@@ -31,10 +31,14 @@ def create_sbatch_file(config):
         # Loop through each node and write its directives
         for i in range(how_many_nodes):
             sbatch_file.write(f"#SBATCH -A lage -p {config['Resources']['nodes_queue'][i]}")
-            sbatch_file.write(f" --nodelist={config['Resources']['nodes_list'][i]}")
+            # If a specific node is not specified let slurm decide
+            if config['Resources']['nodes_list'][i] != "":
+                sbatch_file.write(f" --nodelist={config['Resources']['nodes_list'][i]}")
+            
             sbatch_file.write(f" --nodes=1 --ntasks-per-node=1")
             sbatch_file.write(f" --cpus-per-task={config['Resources']['nodes_cpus'][i]}")
-            
+            sbatch_file.write(f" --mem={config['Resources']['nodes_mem'][i]}")
+
             if config['Resources']['nodes_gpus'][i] != "None":
                 sbatch_file.write(f" --gpus {config['Resources']['nodes_gpus'][i]}\n")
             else:
@@ -50,11 +54,6 @@ def create_sbatch_file(config):
         
         # Write additional sbatch directives for script execution
         sbatch_file.write('json_file=$1\n')
-        sbatch_file.write("index_host=$(jq -r '.Resources.index_host' ")
-        sbatch_file.write('"$json_file")\n')
-        sbatch_file.write("echo 'INDEX_HOST' $index_host\n")
-
-        sbatch_file.write("\n")
 
         # Loop through each node and write srun commands
         for i in range(how_many_nodes):
@@ -64,7 +63,7 @@ def create_sbatch_file(config):
             else:
                 sbatch_file.write(f"srun --het-group={i} ")
 
-            sbatch_file.write(f"{config['Slurm']['instructions']} $json_file $((index_host + {i})) &\n")
+            sbatch_file.write(f"{config['Slurm']['instructions']} $json_file {i} &\n")
 
             # Add a sleep command after each srun command except the last one
             if i != how_many_nodes-1:
