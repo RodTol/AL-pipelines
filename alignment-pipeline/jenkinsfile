@@ -23,10 +23,10 @@
                             sh '''
                                 ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
                                     # Output dir
-                                    rm -r /u/area/jenkins_onpexp/fast/tmp/*
+                                    rm -rf /u/area/jenkins_onpexp/fast/tmp/*
 
                                     # Slurm log dir
-                                    rm -r /u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp/*
+                                    rm -rf /u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp/*
                                 '
                             '''
                         }
