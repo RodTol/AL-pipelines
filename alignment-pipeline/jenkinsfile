@@ -16,6 +16,23 @@
             string(name: 'configFilePath', defaultValue: '/u/area/jenkins_onpexp/AL-pipelines/configurations/config.json', description: 'Path to the config JSON file')
         }
         stages {
+            stage('Cleanup') {
+                steps {
+                    script {
+                        withCredentials([sshUserPrivateKey(credentialsId: 'orfeo_jenkins_onpexp', keyFileVariable: 'SSH_ONPEXP_KEY', passphraseVariable: '', usernameVariable: 'SSH_ONPEXP_USER')]) {
+                            sh '''
+                                ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
+                                    # Output dir
+                                    rm -r /u/area/jenkins_onpexp/fast/tmp/*
+
+                                    # Slurm log dir
+                                    rm -r /u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp/*
+                                '
+                            '''
+                        }
+                    }    
+                }
+            }            
             stage('Pull project repository on the Cluster') {
                 steps {
                     script {
