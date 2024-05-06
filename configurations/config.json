@@ -10,7 +10,11 @@
       "instructions": "/u/area/jenkins_onpexp/AL-pipelines/AL_scripts/instructions.sh "
     },
     "Alignment": {
-      "threads": [24]
+      "threads": [24],
+      "input_file": "/u/area/jenkins_onpexp/fast/Basecalled_CliveOME/hac/total_basecall.fastq",
+      "output_file": "/u/area/jenkins_onpexp/fast/tmp/CliveOME.sam",
+      "logs_dir": "/u/area/jenkins_onpexp/fast/tmp",      
+      "reference_genome": "/u/area/jenkins_onpexp/fast/GRCh37_latest_genomic.fna"
     },
     "Resources": {
       "nodes_queue" : ["EPYC"],
