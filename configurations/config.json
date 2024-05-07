@@ -17,7 +17,7 @@
       "reference_genome": "/u/area/jenkins_onpexp/fast/GRCh37_latest_genomic.fna"
     },
     "Resources": {
-      "nodes_queue" : ["EPYC"],
+      "nodes_queue" : ["DGX"],
       "nodes_list" : [""],
       "nodes_ip" : [""],
       "nodes_cpus" : ["48"],
