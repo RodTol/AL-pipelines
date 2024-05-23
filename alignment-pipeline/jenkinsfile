@@ -23,7 +23,7 @@
                             sh '''
                                 ssh -i ${SSH_ONPEXP_KEY} ${SSH_ONPEXP_USER}@10.128.2.80 '
                                     # Output dir
-                                    rm -rf /u/area/jenkins_onpexp/fast/tmp/*
+                                    rm -rf /u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/tmp/*.sam
 
                                     # Slurm log dir
                                     rm -rf /u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp/*

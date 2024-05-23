@@ -1,7 +1,7 @@
 {
     "General": {
       "run_name": "AL_ExampleRun",
-      "run_time": "01:00:00",
+      "run_time": "06:00:00",
       "version": "3.0"
     },
     "Slurm": {
@@ -11,10 +11,10 @@
     },
     "Alignment": {
       "threads": [24],
-      "input_file": "/u/area/jenkins_onpexp/fast/Basecalled_CliveOME/hac/total_basecall.fastq",
-      "output_file": "/u/area/jenkins_onpexp/fast/tmp/CliveOME.sam",
-      "logs_dir": "/u/area/jenkins_onpexp/fast/tmp",      
-      "reference_genome": "/u/area/jenkins_onpexp/fast/GRCh37_latest_genomic.fna"
+      "input_file": "/u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/tmp/total_pass_reads.fastq",
+      "output_file": "/u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/tmp/CliveOME.sam",
+      "logs_dir": "/u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp",      
+      "reference_genome": "/u/area/jenkins_onpexp/scratch/GRCh37_latest_genomic.fna"
     },
     "Resources": {
       "nodes_queue" : ["DGX"],
