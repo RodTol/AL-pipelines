@@ -1,8 +1,8 @@
 {
     "General": {
-      "run_name": "AL_ExampleRun",
-      "run_time": "01:00:00",
-      "version": "3.0"
+      "run_name": "Run_",
+      "run_time": "02:00:00",
+      "version": "2.0"
     },
     "Slurm": {
       "output": "/u/area/jenkins_onpexp/scratch/jenkins_logs/tmp_al/%x-%j.out",
@@ -10,15 +10,15 @@
       "instructions": "/u/area/jenkins_onpexp/AL-pipelines/AL_scripts/instructions.sh "
     },
     "Alignment": {
-      "threads": [24,24]
+      "threads": [24]
     },
     "Resources": {
-      "nodes_queue" : ["EPYC","EPYC"],
-      "nodes_list" : ["",""],
-      "nodes_ip" : ["", ""],
-      "nodes_cpus" : ["48", "48"],
-      "nodes_mem" : ["200GB", "200GB"],      
-      "nodes_gpus" : ["0", "0"]
+      "nodes_queue" : ["EPYC"],
+      "nodes_list" : [""],
+      "nodes_ip" : [""],
+      "nodes_cpus" : ["48"],
+      "nodes_mem" : ["200GB"],      
+      "nodes_gpus" : ["0"]
     }
   }
   

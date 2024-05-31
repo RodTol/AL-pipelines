@@ -1,4 +1,5 @@
 #!/bin/bash
+module load samtools
 
 # Color for bash echo
 RED="\033[0;31m"
@@ -39,5 +40,29 @@ echo -e "${RED}-----------------------${RESET}"
 # Load virtualenv for Python:
 # None for now
 
-# Start the alignment
-minimap2 -t $threads -a -x map-ont $reference_genome  $input_file -o $output_file
+#Maye trimming and filtering
+
+# Start the alignment (fastq to sam )
+minimap2 -t $threads -ax map-ont $reference_genome  $input_file -o $output_file
+echo "Alignment completed"
+
+#Create unsorted bam file
+bam_file_not_sorted="${output_file%.sam}_not_sorted.bam"
+echo "Converting to $bam_file_not_sorted"
+
+samtools view -Sb $output_file > $bam_file_not_sorted
+echo "Conversion ended"
+
+#Sort the bam file
+bam_file="${output_file%.sam}.bam"
+samtools sort $bam_file_not_sorted -o $bam_file
+echo "Sorting completed"
+
+#index the bam file
+samtools index $bam_file
+echo "Indexing completed"
+
+#compute alignment statistic
+samtools flagstat $bam_file
+
+#Variant calling/Mark duplicates

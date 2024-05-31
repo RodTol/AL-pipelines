@@ -1,0 +1,28 @@
+{
+    "General": {
+      "run_name": "TestRun",
+      "run_time": "01:00:00",
+      "version": "3.0"
+    },
+    "Slurm": {
+      "output": "/u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp/%x-%j.out",
+      "error": "/u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp/%x-%j.err",
+      "instructions": "/u/area/jenkins_onpexp/AL-pipelines/AL_scripts/instructions.sh "
+    },
+    "Alignment": {
+      "threads": [24],
+      "input_file": "/u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/tmp/pass/job_id_333823891951448952853396214287922833957_fastq_runid_58881fec94cd84e3217e3b5dd7ebdab4eb3a5166_client4_7_0_BATCH_185269770604698359042528320334322920070.fastq",
+      "output_file": "/u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/tmp/example.sam",
+      "logs_dir": "/u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp",      
+      "reference_genome": "/u/area/jenkins_onpexp/scratch/GRCh37_latest_genomic.fna"
+    },
+    "Resources": {
+      "nodes_queue" : ["EPYC"],
+      "nodes_list" : [""],
+      "nodes_ip" : [""],
+      "nodes_cpus" : ["24"],
+      "nodes_mem" : ["200GB"],      
+      "nodes_gpus" : ["0"]
+    }
+  }
+  
