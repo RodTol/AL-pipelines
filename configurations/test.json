@@ -12,7 +12,7 @@
     "Alignment": {
       "threads": [24],
       "input_file": "/u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/tmp/pass/job_id_333823891951448952853396214287922833957_fastq_runid_58881fec94cd84e3217e3b5dd7ebdab4eb3a5166_client4_7_0_BATCH_185269770604698359042528320334322920070.fastq",
-      "output_file": "/u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/tmp/example.sam",
+      "output_file": "/u/area/jenkins_onpexp/scratch/AL-pipeline_output_test/tmp/example.sam",
       "logs_dir": "/u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp",      
       "reference_genome": "/u/area/jenkins_onpexp/scratch/GRCh37_latest_genomic.fna"
     },
