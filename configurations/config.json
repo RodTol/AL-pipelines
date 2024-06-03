@@ -13,7 +13,6 @@
       "threads": [24],
       "input_file": "/u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/tmp/total_pass_reads.fastq",
       "output_file": "/u/area/jenkins_onpexp/scratch/BC-pipeline_output_test/tmp/CliveOME.sam",
-      "logs_dir": "/u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp",      
       "reference_genome": "/u/area/jenkins_onpexp/scratch/GRCh37_latest_genomic.fna"
     },
     "Resources": {

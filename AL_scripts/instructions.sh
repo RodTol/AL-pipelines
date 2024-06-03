@@ -15,7 +15,6 @@ my_index=$2
 threads=$(jq -r --argjson my_index "$my_index" '.Alignment.threads[$my_index]' "$json_file")
 input_file=$(jq -r '.Alignment.input_file' "$json_file") 
 output_file=$(jq -r '.Alignment.output_file' "$json_file") 
-logs_dir=$(jq -r '.Alignment.logs_dir' "$json_file") 
 reference_genome=$(jq -r '.Alignment.reference_genome' "$json_file")
 
 node_queue=$(jq -r --argjson my_index "$my_index" '.Resources.nodes_queue[$my_index]' "$json_file")
@@ -32,7 +31,6 @@ echo -e "${RED}-----------------------${RESET}"
 echo "Threads to be used: $threads"
 echo "Reference genome: $reference_genome"
 echo "Node queue: $node_queue"
-echo "Logs Directory: $logs_dir"
 echo "Input Directory: $input_file"
 echo "Output Directory: $output_file"
 echo -e "${RED}-----------------------${RESET}"

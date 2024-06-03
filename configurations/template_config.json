@@ -13,7 +13,6 @@
       "threads": [24],
       "input_file": "",
       "output_file": "",
-      "logs_dir": "/u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp",      
       "reference_genome": "/u/area/jenkins_onpexp/scratch/GRCh37_latest_genomic.fna"
     },
     "Resources": {
