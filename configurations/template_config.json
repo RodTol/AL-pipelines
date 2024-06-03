@@ -5,12 +5,16 @@
       "version": "2.0"
     },
     "Slurm": {
-      "output": "/u/area/jenkins_onpexp/scratch/jenkins_logs/tmp_al/%x-%j.out",
-      "error": "/u/area/jenkins_onpexp/scratch/jenkins_logs/tmp_al/%x-%j.err",
+      "output": "",
+      "error": "",
       "instructions": "/u/area/jenkins_onpexp/AL-pipelines/AL_scripts/instructions.sh "
     },
     "Alignment": {
-      "threads": [24]
+      "threads": [24],
+      "input_file": "",
+      "output_file": "",
+      "logs_dir": "/u/area/jenkins_onpexp/scratch/jenkins_logs/align_tmp",      
+      "reference_genome": "/u/area/jenkins_onpexp/scratch/GRCh37_latest_genomic.fna"
     },
     "Resources": {
       "nodes_queue" : ["EPYC"],
