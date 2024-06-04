@@ -88,4 +88,10 @@ echo "Indexing completed"
 #compute alignment statistic
 samtools flagstat $bam_file
 
+#QC report
+#module load R
+#module load java
+#unset DISPLAY
+#qualimap bamqc -bam batch_293436308571279569530322515273083434315.bam -outdir qualimap
+
 #Variant calling/Mark duplicates
